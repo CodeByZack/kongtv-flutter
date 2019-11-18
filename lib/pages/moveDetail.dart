@@ -15,15 +15,22 @@ class _MovieDetailState extends State<MovieDetail> {
         appBar: AppBar(
           title: Text(item.vodName),
         ),
-        body: Padding(
-          padding: EdgeInsets.only(top: 64, left: 16, right: 16, bottom: 16),
-          child: Column(
-            children: <Widget>[
-              buildTop(item),
-              buildDesc(item),
-            ],
+        body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(top: 48, left: 16, right: 16, bottom: 16),
+              child: Column(
+                  children: <Widget>[
+                    buildTop(item),
+                    buildDesc(item),
+                    Padding(
+                      padding: EdgeInsets.only(top:20),
+                      child: buildPlayList(item),
+                    )
+                  ]
+              ),
+            ),
           ),
-        ));
+        );
   }
 
   Row buildTop(Movie item) {
@@ -71,5 +78,49 @@ class _MovieDetailState extends State<MovieDetail> {
         ],
       ),
     );
+  }
+
+  Column buildPlayList(Movie item) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Icon(Icons.list),
+            Text("剧集列表")
+          ],
+        ),
+        GridView.count(
+          crossAxisCount: 3,
+//          childAspectRatio: 2 / 3.5,
+          shrinkWrap: true,
+          crossAxisSpacing: 10,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          physics: NeverScrollableScrollPhysics(),
+          children: handlePlayList(item),
+        )
+      ],
+    );
+  }
+
+  List<Widget> handlePlayList(Movie item) {
+    String url = item.vodPlayUrl;
+    List<String> t = url.split("\$\$\$");
+    String one = t[0];
+    t = one.split("#");
+    Map<String,String> data = {};
+    t.forEach((e){
+      List<String> tt = e.split("\$");
+      data.putIfAbsent(tt[0], ()=>tt[1]);
+    });
+
+    List<Widget> widgets = [];
+
+    data.forEach((key,value){
+      widgets.add(RaisedButton(onPressed: null,child: Text(key),));
+    });
+
+
+    return widgets;
   }
 }
