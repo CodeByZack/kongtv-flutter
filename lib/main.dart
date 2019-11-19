@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:learnflutter/pages/playMovie.dart';
 import 'pages/home.dart';
 import 'pages/moveDetail.dart';
-import 'package:flutter/rendering.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
         // home: new MyHomePage(title: "home"),
         routes: {
           "/": (BuildContext context) => new MyHomePage(),
-          "/moviedetail": (BuildContext context)=> MovieDetail()
+          "/moviedetail": (BuildContext context)=> MovieDetail(),
+          "/playmovie": (BuildContext context)=> PlayMovie(),
         });
   }
 }

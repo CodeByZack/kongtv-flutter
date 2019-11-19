@@ -12,25 +12,23 @@ class _MovieDetailState extends State<MovieDetail> {
     Movie item = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-        appBar: AppBar(
-          title: Text(item.vodName),
+      appBar: AppBar(
+        title: Text(item.vodName),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(top: 48, left: 16, right: 16, bottom: 16),
+          child: Column(children: <Widget>[
+            buildTop(item),
+            buildDesc(item),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child: buildPlayList(context,item),
+            )
+          ]),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(top: 48, left: 16, right: 16, bottom: 16),
-              child: Column(
-                  children: <Widget>[
-                    buildTop(item),
-                    buildDesc(item),
-                    Padding(
-                      padding: EdgeInsets.only(top:20),
-                      child: buildPlayList(item),
-                    )
-                  ]
-              ),
-            ),
-          ),
-        );
+      ),
+    );
   }
 
   Row buildTop(Movie item) {
@@ -72,7 +70,7 @@ class _MovieDetailState extends State<MovieDetail> {
         children: <Widget>[
           Text(
             "简介：",
-            style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           Text(item.vodContent)
         ],
@@ -80,46 +78,53 @@ class _MovieDetailState extends State<MovieDetail> {
     );
   }
 
-  Column buildPlayList(Movie item) {
+  Column buildPlayList(BuildContext context ,Movie item) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          children: <Widget>[
-            Icon(Icons.list),
-            Text("剧集列表")
-          ],
+          children: <Widget>[Icon(Icons.list), Text("剧集列表")],
         ),
         GridView.count(
-          crossAxisCount: 3,
-//          childAspectRatio: 2 / 3.5,
+          crossAxisCount: 4,
+          childAspectRatio: 2 / 0.7,
           shrinkWrap: true,
-          crossAxisSpacing: 10,
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          padding: EdgeInsets.only(top: 10),
           physics: NeverScrollableScrollPhysics(),
-          children: handlePlayList(item),
+          children: handlePlayList(context,item),
         )
       ],
     );
   }
 
-  List<Widget> handlePlayList(Movie item) {
+  List<Widget> handlePlayList(BuildContext context,Movie item) {
     String url = item.vodPlayUrl;
     List<String> t = url.split("\$\$\$");
     String one = t[0];
     t = one.split("#");
-    Map<String,String> data = {};
-    t.forEach((e){
+    Map<String, String> data = {};
+    t.forEach((e) {
       List<String> tt = e.split("\$");
-      data.putIfAbsent(tt[0], ()=>tt[1]);
+      data.putIfAbsent(tt[0], () => tt[1]);
     });
 
     List<Widget> widgets = [];
 
-    data.forEach((key,value){
-      widgets.add(RaisedButton(onPressed: null,child: Text(key),));
-    });
+    data.forEach((key, value) {
+      widgets.add(RaisedButton(
+          onPressed: () {
+            print("$key,$value");
+            Navigator.pushNamed(context, "/playmovie",arguments: item);
 
+          },
+          textColor: Colors.white,
+          color: Color.fromARGB(2, 2, 200, 200),
+          padding: const EdgeInsets.all(0.0),
+          child: Text(key)
+      ));
+    });
 
     return widgets;
   }
