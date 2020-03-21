@@ -104,28 +104,38 @@ class _MovieDetailState extends State<MovieDetail> {
     List<String> t = url.split("\$\$\$");
     String one = t[0];
     t = one.split("#");
-    Map<String, String> data = {};
+    List<PlayItem> list = [];
+
     t.forEach((e) {
       List<String> tt = e.split("\$");
-      data.putIfAbsent(tt[0], () => tt[1]);
+      PlayItem playItem = new PlayItem(item.vodName, tt[0], tt[1]);
+      list.add(playItem);
     });
 
     List<Widget> widgets = [];
 
-    data.forEach((key, value) {
+    list.forEach((play) {
       widgets.add(RaisedButton(
           onPressed: () {
-            print("$key,$value");
-            Navigator.pushNamed(context, "/playmovie",arguments: item);
+            print(play);
+            Navigator.pushNamed(context, "/playmovie",arguments: play);
 
           },
           textColor: Colors.white,
           color: Color.fromARGB(2, 2, 200, 200),
           padding: const EdgeInsets.all(0.0),
-          child: Text(key)
+          child: Text(play.linkName)
       ));
     });
 
     return widgets;
   }
+}
+
+
+class PlayItem{
+  String movieName;
+  String linkName;
+  String linkUrl;
+  PlayItem(this.movieName,this.linkName,this.linkUrl);
 }

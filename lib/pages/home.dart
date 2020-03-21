@@ -28,13 +28,13 @@ class _HomePageState extends State<HomePage> {
       List<Movie> dyt = List(), dmt = List(), dsjt = List(), zyt = List();
       for (var i = 0; i < movies.length; i++) {
         Movie m = movies[i];
-        if (m.vodLevel == "1") {
+        if (m.typeId1== "1") {
           dyt.add(m);
-        } else if (m.vodLevel == "2") {
+        } else if (m.typeId1 == "2") {
           dsjt.add(m);
-        } else if (m.vodLevel == "3") {
+        } else if (m.typeId == "3") {
           dmt.add(m);
-        } else if (m.vodLevel == "4") {
+        } else if (m.typeId == "4") {
           zyt.add(m);
         }
       }
@@ -135,6 +135,6 @@ class HomeSection extends StatelessWidget {
 
   handleTap(BuildContext context,Movie item) {
     print(item.vodName);
-    Navigator.pushNamed(context, "/moviedetail",arguments: item);
+    Navigator.of(context).pushNamed("/moviedetail",arguments: item);
   }
 }
