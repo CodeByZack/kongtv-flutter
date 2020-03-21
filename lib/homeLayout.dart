@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:learnflutter/pages/category.dart';
 import 'pages/home.dart';
 class MyHomePage extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<String> tabs = ["首页", "电影", "电视剧", "动漫", "综艺"];
+  final List<String> tabPY = ["index","dy", "dsj", "dm", "zy"];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -42,10 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> buildList() {
     List<Widget> ws = [];
     ws.add(new HomePage());
-    ws.add(new Text("电影"));
-    for (var i = 1; i < tabs.length - 1; i++) {
-      ws.add(new Text(tabs[i]));
+    for (var i = 1; i < tabs.length ; i++) {
+      ws.add(new CategoryPage(tabPY[i]));
     }
+
     return ws;
   }
 }
