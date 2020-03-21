@@ -14,7 +14,7 @@ class CategoryPage extends StatefulWidget {
   _CategoryPage createState() => new _CategoryPage(type);
 }
 
-class _CategoryPage extends State<CategoryPage> with CancelMixin {
+class _CategoryPage extends State<CategoryPage> with CancelMixin,AutomaticKeepAliveClientMixin {
   int page = 0;
   int loadStatus = 0;
   String type;
@@ -104,4 +104,8 @@ class _CategoryPage extends State<CategoryPage> with CancelMixin {
     // TODO: implement dispose
     super.dispose();
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

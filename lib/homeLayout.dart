@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:learnflutter/base/global.dart';
 import 'package:learnflutter/pages/category.dart';
 import 'pages/home.dart';
 class MyHomePage extends StatefulWidget {
@@ -8,13 +9,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<String> tabs = ["首页", "电影", "电视剧", "动漫", "综艺"];
-  final List<String> tabPY = ["index","dy", "dsj", "dm", "zy"];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new DefaultTabController(
-      length: tabs.length,
+      length: TAB_TITLES.length,
       child: new Scaffold(
         appBar: new AppBar(
           title: new Text("风影院"),
@@ -26,17 +25,16 @@ class _MyHomePageState extends State<MyHomePage> {
             )
           ],
           bottom: new TabBar(
-              isScrollable: true,
-              tabs: tabs.map((String tab) {
+              tabs: TAB_TITLES.map((String tab) {
                 return new Tab(text: tab);
               }).toList()),
         ),
         body: new TabBarView(
           children: buildList(),
         ),
-        drawer: new Drawer(
-          child: new Text("drawer"),
-        ),
+        // drawer: new Drawer(
+        //   child: new Text("drawer"),
+        // ),
       ),
     );
   }
@@ -44,8 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> buildList() {
     List<Widget> ws = [];
     ws.add(new HomePage());
-    for (var i = 1; i < tabs.length ; i++) {
-      ws.add(new CategoryPage(tabPY[i]));
+    for (var i = 1; i < TAB_TITLES.length ; i++) {
+      ws.add(new CategoryPage(MOVIE_TYPE[i]));
     }
 
     return ws;

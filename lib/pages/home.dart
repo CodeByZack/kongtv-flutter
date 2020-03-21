@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:learnflutter/http/api.dart';
 import 'package:learnflutter/models/movie.dart';
 import 'package:learnflutter/pages/components/movieItem.dart';
@@ -11,11 +11,12 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => new _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin{
   List<Movie> dy = [];
   List<Movie> zy = [];
   List<Movie> dsj = [];
   List<Movie> dm = [];
+  List<Movie> banner = [];
 
   @override
   void initState() {
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       List<Movie> dyt = List(), dmt = List(), dsjt = List(), zyt = List();
       for (var i = 0; i < movies.length; i++) {
         Movie m = movies[i];
-        if (m.typeId1== "1") {
+        if (m.typeId1 == "1") {
           dyt.add(m);
         } else if (m.typeId1 == "2") {
           dsjt.add(m);
@@ -49,6 +50,10 @@ class _HomePageState extends State<HomePage> {
         dsj = dsjt;
         dm = dmt;
         zy = zyt;
+        banner.add(dyt[0]);
+        banner.add(dsjt[0]);
+        banner.add(dmt[0]);
+        banner.add(zyt[0]);
       });
     });
   }
@@ -58,10 +63,30 @@ class _HomePageState extends State<HomePage> {
     return new ListView(
       children: <Widget>[
         new Container(
-          height: 200.0, // 单位是逻辑上的像素（并非真实的像素，类似于浏览器中的像素）
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          decoration: new BoxDecoration(color: Colors.blue[500]),
-        ),
+            height: 280.0, // 单位是逻辑上的像素（并非真实的像素，类似于浏览器中的像素）
+            // padding: const EdgeInsets.symmetric(vertical: 8.0),
+            // decoration: new BoxDecoration(color: Colors.blue[500]),
+            child: new Swiper(
+              itemBuilder: (BuildContext context, int index) {
+                Movie item = banner[index];
+                return GestureDetector(
+                  child: ClipRRect(
+                    child: new Image.network(
+                      item.vodPic,
+                      fit: BoxFit.cover,
+                    ),
+                    // borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                  onTap: () {
+                    handleTap(context, item);
+                  },
+                );
+              },
+              itemCount: banner.length,
+              pagination: new SwiperPagination(),
+              // control: new SwiperControl(),
+              autoplay: true,
+            )),
         new HomeSection("热播影视", dsj),
         new HomeSection("热播电影", dy),
         new HomeSection("热播动漫", dm),
@@ -69,6 +94,10 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class HomeSection extends StatelessWidget {
@@ -107,12 +136,12 @@ class HomeSection extends StatelessWidget {
             crossAxisSpacing: 10,
             padding: EdgeInsets.symmetric(horizontal: 10),
             physics: NeverScrollableScrollPhysics(),
-            children: buildGrid(context,movies))
+            children: buildGrid(context, movies))
       ],
     );
   }
 
-  List<Widget> buildGrid(BuildContext context,List<Movie> arry) {
+  List<Widget> buildGrid(BuildContext context, List<Movie> arry) {
     return arry.map((item) {
       return MovieItem(context, item);
     }).toList();
