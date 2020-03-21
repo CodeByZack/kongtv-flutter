@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:learnflutter/http/api.dart';
 import 'package:learnflutter/models/movie.dart';
+import 'package:learnflutter/pages/components/movieItem.dart';
 // import 'package:learnflutter/models/movie.dart';
 
 class HomePage extends StatefulWidget {
@@ -113,28 +114,7 @@ class HomeSection extends StatelessWidget {
 
   List<Widget> buildGrid(BuildContext context,List<Movie> arry) {
     return arry.map((item) {
-      return GestureDetector(
-          onTap: (){handleTap(context,item);},
-          child: Column(
-            children: <Widget>[
-              Image.network(
-                item.vodPic,
-                fit: BoxFit.cover,
-                height: 160,
-              ),
-              Padding(
-                  child: Text(
-                    item.vodName,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  padding: EdgeInsets.only(top: 10))
-            ],
-          ));
+      return MovieItem(context, item);
     }).toList();
-  }
-
-  handleTap(BuildContext context,Movie item) {
-    print(item.vodName);
-    Navigator.of(context).pushNamed("/moviedetail",arguments: item);
   }
 }
