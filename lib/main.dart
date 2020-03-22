@@ -8,23 +8,6 @@ void main() {
   runApp(new MyApp());
 }
 
-
-//  onGenerateRoute = (RouteSettings settings) {
-//   print("onGenerateRoute");
-//   final String name = settings.name;
-//   final Function pageContentBuilder = routers[name];
-//   if (pageContentBuilder != null) {
-//     final Route route = MaterialPageRoute(
-//       builder: (context) {
-//         //将RouteSettings中的arguments参数取出来，通过构造函数传入
-//         return pageContentBuilder(context, arguments: settings.arguments);
-//       },
-//       settings: settings,
-//     );
-//     return route;
-//   }
-// };
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -32,7 +15,10 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: "风影院",
       theme: new ThemeData(
-        primarySwatch: Colors.grey,
+        primaryColor: Colors.white,
+        iconTheme: IconThemeData(color: Colors.grey[700]),
+        backgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(iconTheme: IconThemeData(color: Colors.grey[700]))
       ),
       initialRoute: "/",
       onGenerateRoute: (RouteSettings settings) {

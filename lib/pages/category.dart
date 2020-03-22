@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:learnflutter/base/basePage.dart';
+import 'package:learnflutter/components/movieItem.dart';
 import 'package:learnflutter/http/api.dart';
 import 'package:learnflutter/models/movie.dart';
-import 'package:learnflutter/pages/components/movieItem.dart';
 
 class CategoryPage extends StatefulWidget {
   String type;
@@ -90,7 +90,7 @@ class _CategoryPage extends State<CategoryPage> with CancelMixin,AutomaticKeepAl
       padding: EdgeInsets.all(10),
       child: GridView.count(
           crossAxisCount: 3,
-          childAspectRatio: 2 / 3.5,
+          childAspectRatio: 2 / 3.6,
           shrinkWrap: true,
           crossAxisSpacing: 10,
           controller: _controller,

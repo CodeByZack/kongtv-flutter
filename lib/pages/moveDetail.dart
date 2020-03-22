@@ -14,20 +14,21 @@ class _MovieDetailState extends State<MovieDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text(item.vodName),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(top: 48, left: 16, right: 16, bottom: 16),
-          child: Column(children: <Widget>[
-            buildTop(item),
-            buildDesc(item),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: buildPlayList(context,item),
-            )
-          ]),
-        ),
-      ),
+          child: Container(
+            color: Colors.white,
+            padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
+            child: Column(children: <Widget>[
+              buildTop(item),
+              buildDesc(item),
+              Padding(
+                padding: EdgeInsets.only(top: 20),
+                child: buildPlayList(context, item),
+              )
+            ]),
+          )),
     );
   }
 
@@ -78,7 +79,7 @@ class _MovieDetailState extends State<MovieDetail> {
     );
   }
 
-  Column buildPlayList(BuildContext context ,Movie item) {
+  Column buildPlayList(BuildContext context, Movie item) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -93,13 +94,13 @@ class _MovieDetailState extends State<MovieDetail> {
           mainAxisSpacing: 8,
           padding: EdgeInsets.only(top: 10),
           physics: NeverScrollableScrollPhysics(),
-          children: handlePlayList(context,item),
+          children: handlePlayList(context, item),
         )
       ],
     );
   }
 
-  List<Widget> handlePlayList(BuildContext context,Movie item) {
+  List<Widget> handlePlayList(BuildContext context, Movie item) {
     String url = item.vodPlayUrl;
     List<String> t = url.split("\$\$\$");
     String one = t[0];
@@ -118,24 +119,21 @@ class _MovieDetailState extends State<MovieDetail> {
       widgets.add(RaisedButton(
           onPressed: () {
             print(play);
-            Navigator.pushNamed(context, "/playmovie",arguments: play);
-
+            Navigator.pushNamed(context, "/playmovie", arguments: play);
           },
           textColor: Colors.white,
           color: Color.fromARGB(2, 2, 200, 200),
           padding: const EdgeInsets.all(0.0),
-          child: Text(play.linkName)
-      ));
+          child: Text(play.linkName)));
     });
 
     return widgets;
   }
 }
 
-
-class PlayItem{
+class PlayItem {
   String movieName;
   String linkName;
   String linkUrl;
-  PlayItem(this.movieName,this.linkName,this.linkUrl);
+  PlayItem(this.movieName, this.linkName, this.linkUrl);
 }
