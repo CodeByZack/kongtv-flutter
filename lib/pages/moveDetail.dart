@@ -14,6 +14,7 @@ class _MovieDetailState extends State<MovieDetail> {
   TextStyle _textStyle = TextStyle(
     color: Colors.white.withOpacity(0.8),
     fontSize: 14,
+    height: 1.5
   );
   BoxDecoration _decoration = BoxDecoration(
       color: Colors.white60.withOpacity(0.2),
@@ -34,8 +35,7 @@ class _MovieDetailState extends State<MovieDetail> {
           bkColor = Color.fromRGBO(color[0], color[1], color[2], 1);
         });
       }
-    }).catchError(
-        (onError) => {print("onError:ssssssssssssssssssssssssssssss")});
+    }).catchError((onError) => {print("这个待解决")});
   }
 
   @override
@@ -92,30 +92,43 @@ class _MovieDetailState extends State<MovieDetail> {
               children: <Widget>[
                 Text(
                   item.vodName,
+                  softWrap: true,
+                  textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 Text(
                   "别名: ${item.vodName}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: _textStyle,
                 ),
                 Text(
                   "导演: ${item.vodDirector}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: _textStyle,
                 ),
                 Text(
                   "主演: ${item.vodActor}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: _textStyle,
                 ),
                 Text(
                   "类型: ${item.vodClass}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: _textStyle,
                 ),
                 Text(
                   "地区: ${item.vodArea}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: _textStyle,
                 ),
               ],
@@ -130,6 +143,7 @@ class _MovieDetailState extends State<MovieDetail> {
   Container buildDesc(Movie item) {
     return Container(
       margin: EdgeInsets.only(top: 24),
+      width: double.infinity,
       padding: EdgeInsets.all(8),
       decoration: _decoration,
       child: Column(
@@ -189,7 +203,7 @@ class _MovieDetailState extends State<MovieDetail> {
 
     t.forEach((e) {
       List<String> tt = e.split("\$");
-      PlayItem playItem = new PlayItem(item.vodName, tt[0], tt[1]);
+      PlayItem playItem = new PlayItem(item.vodName, tt[0], tt[1],bkColor);
       list.add(playItem);
     });
 
@@ -220,5 +234,6 @@ class PlayItem {
   String movieName;
   String linkName;
   String linkUrl;
-  PlayItem(this.movieName, this.linkName, this.linkUrl);
+  Color bkColor;
+  PlayItem(this.movieName, this.linkName, this.linkUrl,this.bkColor);
 }
