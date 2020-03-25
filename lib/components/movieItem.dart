@@ -10,7 +10,7 @@ Widget MovieItem(BuildContext context, Movie item) {
           margin: EdgeInsets.only(bottom: 16),
           child: Material(
             color: Colors.white,
-            elevation: 10,
+            elevation: 5,
             borderRadius: BorderRadius.all(Radius.circular(8)),
             child: Column(
               children: <Widget>[

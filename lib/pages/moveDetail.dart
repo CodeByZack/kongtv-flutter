@@ -1,25 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:learnflutter/models/movie.dart';
+import 'package:color_thief_flutter/color_thief_flutter.dart';
+import 'package:color_thief_flutter/utils.dart';
 
 class MovieDetail extends StatefulWidget {
+  Movie arg;
+  MovieDetail(this.arg);
   @override
-  _MovieDetailState createState() => new _MovieDetailState();
+  _MovieDetailState createState() => new _MovieDetailState(arg);
 }
 
 class _MovieDetailState extends State<MovieDetail> {
+  TextStyle _textStyle = TextStyle(
+    color: Colors.white.withOpacity(0.8),
+    fontSize: 14,
+  );
+  BoxDecoration _decoration = BoxDecoration(
+      color: Colors.white60.withOpacity(0.2),
+      borderRadius: BorderRadius.circular(4));
+  Color bkColor = Colors.grey;
+  Movie item;
+  _MovieDetailState(this.item);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPaletteFromUrl(item.vodPic).then((colors) {
+      print(colors);
+      var color = colors[4];
+      if (color != null) {
+        setState(() {
+          bkColor = Color.fromRGBO(color[0], color[1], color[2], 1);
+        });
+      }
+    }).catchError(
+        (onError) => {print("onError:ssssssssssssssssssssssssssssss")});
+  }
+
   @override
   Widget build(BuildContext context) {
-    Movie item = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text(item.vodName),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-          child: Container(
-            color: Colors.white,
-            padding: EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 16),
+        appBar: AppBar(
+          title: Text(item.vodName, style: TextStyle(color: Colors.white)),
+          backgroundColor: bkColor,
+          iconTheme: IconThemeData(color: Colors.white),
+          elevation: 0,
+        ),
+        body: Container(
+          height: double.infinity,
+          color: bkColor,
+          child: SingleChildScrollView(
             child: Column(children: <Widget>[
               buildTop(item),
               buildDesc(item),
@@ -28,8 +59,9 @@ class _MovieDetailState extends State<MovieDetail> {
                 child: buildPlayList(context, item),
               )
             ]),
-          )),
-    );
+            padding: EdgeInsets.all(16),
+          ),
+        ));
   }
 
   Row buildTop(Movie item) {
@@ -37,9 +69,19 @@ class _MovieDetailState extends State<MovieDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
-          flex: 1,
-          child: Image.network(item.vodPic),
-        ),
+            flex: 1,
+            child: Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: AspectRatio(
+                  aspectRatio: 9 / 12,
+                  child: Image.network(item.vodPic, fit: BoxFit.cover),
+                ),
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 1)]),
+            )),
         Expanded(
           flex: 2,
           child: Container(
@@ -48,12 +90,34 @@ class _MovieDetailState extends State<MovieDetail> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(item.vodName),
-                Text("别名: ${item.vodName}"),
-                Text("导演: ${item.vodDirector}"),
-                Text("主演: ${item.vodActor}"),
-                Text("类型: ${item.vodClass}"),
-                Text("地区: ${item.vodArea}"),
+                Text(
+                  item.vodName,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "别名: ${item.vodName}",
+                  style: _textStyle,
+                ),
+                Text(
+                  "导演: ${item.vodDirector}",
+                  style: _textStyle,
+                ),
+                Text(
+                  "主演: ${item.vodActor}",
+                  style: _textStyle,
+                ),
+                Text(
+                  "类型: ${item.vodClass}",
+                  style: _textStyle,
+                ),
+                Text(
+                  "地区: ${item.vodArea}",
+                  style: _textStyle,
+                ),
               ],
             ),
             margin: EdgeInsets.only(left: 16),
@@ -66,14 +130,20 @@ class _MovieDetailState extends State<MovieDetail> {
   Container buildDesc(Movie item) {
     return Container(
       margin: EdgeInsets.only(top: 24),
+      padding: EdgeInsets.all(8),
+      decoration: _decoration,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             "简介：",
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
           ),
-          Text(item.vodContent)
+          Text(
+            item.vodContent,
+            style: _textStyle,
+          )
         ],
       ),
     );
@@ -84,7 +154,17 @@ class _MovieDetailState extends State<MovieDetail> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
-          children: <Widget>[Icon(Icons.list), Text("剧集列表")],
+          children: <Widget>[
+            Icon(
+              Icons.list,
+              size: 20,
+              color: Colors.white,
+            ),
+            Text(
+              "剧集列表",
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            )
+          ],
         ),
         GridView.count(
           crossAxisCount: 4,
@@ -116,15 +196,20 @@ class _MovieDetailState extends State<MovieDetail> {
     List<Widget> widgets = [];
 
     list.forEach((play) {
-      widgets.add(RaisedButton(
-          onPressed: () {
-            print(play);
-            Navigator.pushNamed(context, "/playmovie", arguments: play);
-          },
-          textColor: Colors.white,
-          color: Color.fromARGB(2, 2, 200, 200),
-          padding: const EdgeInsets.all(0.0),
-          child: Text(play.linkName)));
+      widgets.add(GestureDetector(
+        onTap: () {
+          print(play);
+          Navigator.pushNamed(context, "/playmovie", arguments: play);
+        },
+        child: Container(
+          decoration: _decoration,
+          alignment: Alignment.center,
+          child: Text(
+            play.linkName,
+            style: _textStyle,
+          ),
+        ),
+      ));
     });
 
     return widgets;

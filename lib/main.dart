@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
         print('build route for ${settings.name}');
         var routes = <String, WidgetBuilder>{
           "/": (ctx) => MyHomePage(),
-          "/moviedetail": (ctx) => MovieDetail(),
+          "/moviedetail": (ctx) => MovieDetail(settings.arguments),
           "/playmovie": (ctx) => PlayMovie(settings.arguments),
         };
         WidgetBuilder builder = routes[settings.name];
