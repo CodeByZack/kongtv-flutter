@@ -27,7 +27,7 @@ dependencies:
   awsome_video_player: #latest
   flutter_swiper : ^1.1.6
   color_thief_flutter : #latest
-  dlna: ^0.0.5
+  dlna: ^0.0.4
 
 dev_dependencies:
   build_runner: ^1.0.0

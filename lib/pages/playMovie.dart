@@ -15,13 +15,24 @@ class _PlayMovieState extends State<PlayMovie> {
   bool _isfullScreen = false;
   _PlayMovieState(this.arguments);
   var dlnaManager = DLNAManager();
+  List<DLNADevice> _devices = [];
+  VideoObject _didlObject;
+  DLNADevice _dlnaDevice;
+
+  _touPing() async {
+    var result = await dlnaManager.actSetVideoUrl(_didlObject);
+    print(result);
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dlnaManager.setRefresher(DeviceRefresher(onDeviceAdd: (dlnaDevice) {
-      print('add ' + dlnaDevice.toString());
+      if (!_devices.contains(dlnaDevice)) {
+        print('add ' + dlnaDevice.toString());
+        _devices.add(dlnaDevice);
+      }
     }, onDeviceRemove: (dlnaDevice) {
       print('remove ' + dlnaDevice.toString());
     }, onDeviceUpdate: (dlnaDevice) {
@@ -148,7 +159,8 @@ class _PlayMovieState extends State<PlayMovie> {
             RaisedButton(
               child: Text("搜索"),
               onPressed: () {
-                dlnaManager.startSearch();
+                // dlnaManager.startSearch();
+                showDlnaDialog(context, (callback){print(callback);});
               },
             )
           ]),
@@ -159,5 +171,41 @@ class _PlayMovieState extends State<PlayMovie> {
   void dispose() {
     super.dispose();
     dlnaManager.release();
+  }
+}
+
+void showDlnaDialog(BuildContext context, Function callback) async {
+  var result = await showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return Container(
+        height: 200, //不设置默认高度为一半
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              title: Text('分享A'),
+              onTap: () {
+                Navigator.pop(context, 'A');
+              },
+            ),
+            ListTile(
+              title: Text('分享B'),
+              onTap: () {
+                Navigator.pop(context, 'B');
+              },
+            ),
+            ListTile(
+              title: Text('分享C'),
+              onTap: () {
+                Navigator.pop(context, 'C');
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+  if(callback!=null){
+    callback(result);
   }
 }
