@@ -18,13 +18,16 @@ Widget MovieItem(BuildContext context, Movie item) {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(8),
                       topRight: Radius.circular(8)),
-                  child: AspectRatio(
-                    aspectRatio: 9 / 12,
-                    child: Image.network(
-                      item.vodPic,
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
+                  child: Hero(
+                    child: AspectRatio(
+                      aspectRatio: 9 / 12,
+                      child: Image.network(
+                        item.vodPic,
+                        fit: BoxFit.cover,
+                        alignment: Alignment.topCenter,
+                      ),
                     ),
+                    tag: item.vodId,
                   ),
                 ),
                 Padding(

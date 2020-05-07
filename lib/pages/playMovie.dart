@@ -1,4 +1,5 @@
 import 'package:awsome_video_player/awsome_video_player.dart';
+import 'package:dlna/dlna.dart';
 import 'package:flutter/material.dart';
 import 'package:learnflutter/pages/moveDetail.dart';
 
@@ -13,6 +14,22 @@ class _PlayMovieState extends State<PlayMovie> {
   PlayItem arguments;
   bool _isfullScreen = false;
   _PlayMovieState(this.arguments);
+  var dlnaManager = DLNAManager();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dlnaManager.setRefresher(DeviceRefresher(onDeviceAdd: (dlnaDevice) {
+      print('add ' + dlnaDevice.toString());
+    }, onDeviceRemove: (dlnaDevice) {
+      print('remove ' + dlnaDevice.toString());
+    }, onDeviceUpdate: (dlnaDevice) {
+      print('update ' + dlnaDevice.toString());
+    }, onSearchError: (error) {
+      print(error);
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +73,15 @@ class _PlayMovieState extends State<PlayMovie> {
 
                   /// 暂停时是否显示视频中部播放按钮
                   showPlayIcon: true,
-                  videoTopBarStyle:
-                      VideoTopBarStyle(show: _isfullScreen, contents: [
-                    Text(
-                      "${arguments.movieName}${arguments.linkName}",
-                      style: TextStyle(color: Colors.white),
-                    )
-                  ],height: 50),
+                  videoTopBarStyle: VideoTopBarStyle(
+                      show: _isfullScreen,
+                      contents: [
+                        Text(
+                          "${arguments.movieName}${arguments.linkName}",
+                          style: TextStyle(color: Colors.white),
+                        )
+                      ],
+                      height: 50),
 
                   /// 自定义底部控制栏
                   videoControlBarStyle: VideoControlBarStyle(
@@ -126,6 +145,12 @@ class _PlayMovieState extends State<PlayMovie> {
                 },
               ),
             ),
+            RaisedButton(
+              child: Text("搜索"),
+              onPressed: () {
+                dlnaManager.startSearch();
+              },
+            )
           ]),
         ));
   }
@@ -133,5 +158,6 @@ class _PlayMovieState extends State<PlayMovie> {
   @override
   void dispose() {
     super.dispose();
+    dlnaManager.release();
   }
 }

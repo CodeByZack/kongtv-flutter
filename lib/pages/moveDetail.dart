@@ -12,10 +12,7 @@ class MovieDetail extends StatefulWidget {
 
 class _MovieDetailState extends State<MovieDetail> {
   TextStyle _textStyle = TextStyle(
-    color: Colors.white.withOpacity(0.8),
-    fontSize: 14,
-    height: 1.5
-  );
+      color: Colors.white.withOpacity(0.8), fontSize: 14, height: 1.5);
   BoxDecoration _decoration = BoxDecoration(
       color: Colors.white60.withOpacity(0.2),
       borderRadius: BorderRadius.circular(4));
@@ -29,7 +26,7 @@ class _MovieDetailState extends State<MovieDetail> {
     super.initState();
     getPaletteFromUrl(item.vodPic).then((colors) {
       print(colors);
-      var color = colors[4];
+      var color = colors[1];
       if (color != null) {
         setState(() {
           bkColor = Color.fromRGBO(color[0], color[1], color[2], 1);
@@ -73,10 +70,12 @@ class _MovieDetailState extends State<MovieDetail> {
             child: Container(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
-                child: AspectRatio(
-                  aspectRatio: 9 / 12,
-                  child: Image.network(item.vodPic, fit: BoxFit.cover),
-                ),
+                child: Hero(
+                    tag: item.vodId,
+                    child: AspectRatio(
+                      aspectRatio: 9 / 12,
+                      child: Image.network(item.vodPic, fit: BoxFit.cover),
+                    )),
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
@@ -203,7 +202,7 @@ class _MovieDetailState extends State<MovieDetail> {
 
     t.forEach((e) {
       List<String> tt = e.split("\$");
-      PlayItem playItem = new PlayItem(item.vodName, tt[0], tt[1],bkColor);
+      PlayItem playItem = new PlayItem(item.vodName, tt[0], tt[1], bkColor);
       list.add(playItem);
     });
 
@@ -235,5 +234,5 @@ class PlayItem {
   String linkName;
   String linkUrl;
   Color bkColor;
-  PlayItem(this.movieName, this.linkName, this.linkUrl,this.bkColor);
+  PlayItem(this.movieName, this.linkName, this.linkUrl, this.bkColor);
 }
