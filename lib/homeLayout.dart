@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: buildTabBarViews(),
         ),
         drawer: Drawer(
-          child: new Container(),
+          child: MyDrawer(),
         ),
       ),
     );
@@ -35,4 +35,18 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     return ws;
   }
+}
+
+class MyDrawer extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Column(
+      children: <Widget>[
+        Image.asset("imgs/logo.png",height: 40)
+      ],
+    );
+  }
+  
+  
 }
