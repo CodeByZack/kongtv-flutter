@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'homeLayout.dart';
 import 'pages/moveDetail.dart';
-import 'pages/playMovie.dart';
+import 'pages/playMovie/index.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
