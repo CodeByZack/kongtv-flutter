@@ -1,4 +1,6 @@
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
+import 'package:learnflutter/base/global.dart';
 import 'package:learnflutter/models/movie.dart';
 import 'package:color_thief_flutter/color_thief_flutter.dart';
 import 'package:color_thief_flutter/utils.dart';
@@ -10,6 +12,7 @@ class MovieDetail extends StatefulWidget {
   _MovieDetailState createState() => new _MovieDetailState(arg);
 }
 
+
 class _MovieDetailState extends State<MovieDetail> {
   TextStyle _textStyle = TextStyle(
       color: Colors.white.withOpacity(0.8), fontSize: 14, height: 1.5);
@@ -18,12 +21,18 @@ class _MovieDetailState extends State<MovieDetail> {
       borderRadius: BorderRadius.circular(4));
   Color bkColor = Colors.grey;
   Movie item;
+
+  BannerAd _bannerAd;
+
   _MovieDetailState(this.item);
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _bannerAd = AdUtils.createBannerAd()..load()..show();
+
     getPaletteFromUrl(item.vodPic).then((colors) {
       print(colors);
       var color = colors[1];
@@ -33,6 +42,12 @@ class _MovieDetailState extends State<MovieDetail> {
         });
       }
     }).catchError((onError) => {print("这个待解决")});
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
